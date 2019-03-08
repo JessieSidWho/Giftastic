@@ -26,16 +26,38 @@ $(document).ready(function(){
               var rating = results[i].rating;
               var pOne = $("<p>").text("Rating: " + rating);
               carDiv.append(pOne);
+
+              
     
-              var imageUrl = results[i].images.fixed_height.url;
-              console.log(imageUrl);
+              var imageUrlS = results[i].images.fixed_height_still.url;
+              var imageUrlA = results[i].images.fixed_height.url;
+              console.log(imageUrlA);
               var carImage = $("<img>");
-              carImage.attr("src", imageUrl);
+              carImage.addClass("gif")
+              carImage.attr("src", imageUrlS);
+              carImage.attr("data-still", imageUrlS);
+              carImage.attr("data-animate", imageUrlA);
+              carImage.attr("data-state", "still");
               carImage.attr("alt", "car image");
               carDiv.append(carImage);
     
               $("#gifs-dump").prepend(carDiv);
             }
+
+                // Gif Click Pause/Play Function
+                $(".gif").on("click", function(){
+            
+                    var state = $(this).attr("data-state");
+                
+                    if (state === "still") {
+                        $(this).attr("src", $(this).attr("data-animate"));
+                        $(this).attr("data-state", "animate");
+                    } else {
+                        $(this).attr("src", $(this).attr("data-still"));
+                        $(this).attr("data-state", "still");
+                    }
+            
+                });
 
         });
     }
@@ -47,7 +69,7 @@ $(document).ready(function(){
         for (var i = 0; i < cars.length; i++) {
 
           var a = $("<button>");
-          a.addClass("car-btn btn btn-info m-1 text-center mt-2");
+          a.addClass("car-btn btn btn-info m-1 text-center mt-3");
           a.attr("data-name", cars[i]);
           a.text(cars[i]);
           $("#buttons-view").append(a);
